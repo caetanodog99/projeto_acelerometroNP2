@@ -1,10 +1,17 @@
 using UnityEngine;
 using TMPro;
+using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class colision : MonoBehaviour
 {
     private int pontos;
     [SerializeField] private TextMeshProUGUI textoPontos;
+    [SerializeField] private GameObject painelVitoria;
+    [SerializeField] private GameObject painelRestantes;
+    [SerializeField] private string fase1;
+    [SerializeField] private string fase2;
+    [SerializeField] private string menu;
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -12,22 +19,43 @@ public class colision : MonoBehaviour
         {
             if (pontos>=8)
             {
-                Debug.Log("Parabéns, você venceu!!s");
+                painelVitoria.SetActive(true);
                 Time.timeScale = 0f;
             }
             else
             {
-                Debug.Log("Colete as bolas restantes!");
+                painelRestantes.SetActive(true);
+                StartCoroutine(DesativarRestantes(2f));
             }
         }
+
+        IEnumerator DesativarRestantes(float time)
+        {
+            yield return new WaitForSeconds(time);
+            painelRestantes.SetActive(false);
+        }
+
 
         if (collision.gameObject.CompareTag("Coletavel"))
         {
 
             pontos++;
             textoPontos.text = ("Pontuação: "+ pontos);
-            Debug.Log(collision.gameObject);
             Destroy(collision.gameObject);
         }
+    }
+
+    public void ProximaFase()
+    {
+        SceneManager.UnloadScene(fase1);
+        SceneManager.LoadScene(fase2);
+        Time.timeScale = 1f;
+    }
+
+    public void Rejogar()
+    {
+        SceneManager.UnloadScene(fase2);
+        SceneManager.LoadScene(menu);
+        Time.timeScale = 1f;
     }
 }
