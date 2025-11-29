@@ -12,6 +12,8 @@ public class colision : MonoBehaviour
     [SerializeField] private string fase1;
     [SerializeField] private string fase2;
     [SerializeField] private string menu;
+    [SerializeField] private AudioSource audioColeta;
+    [SerializeField] private AudioSource audioVitoria;
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -19,6 +21,7 @@ public class colision : MonoBehaviour
         {
             if (pontos>=8)
             {
+                audioVitoria.Play();
                 painelVitoria.SetActive(true);
                 Time.timeScale = 0f;
             }
@@ -38,7 +41,7 @@ public class colision : MonoBehaviour
 
         if (collision.gameObject.CompareTag("Coletavel"))
         {
-
+            audioColeta.Play();
             pontos++;
             textoPontos.text = ("Pontuação: "+ pontos);
             Destroy(collision.gameObject);

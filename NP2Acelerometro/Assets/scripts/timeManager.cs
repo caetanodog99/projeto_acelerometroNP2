@@ -10,6 +10,7 @@ public class timeManager : MonoBehaviour
     [SerializeField] private GameObject painelDerrota;
     private bool playerLost = false;
     [SerializeField] private string fase;
+    [SerializeField] private AudioSource audioDerrota;
 
     void Update()
     {
@@ -38,6 +39,7 @@ public class timeManager : MonoBehaviour
 
     void PlayerLose()
     {
+        audioDerrota.Play();
         playerLost = true;
         painelDerrota.SetActive(true);
         Time.timeScale = 0f;  
